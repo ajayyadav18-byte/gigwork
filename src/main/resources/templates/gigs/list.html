@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,16 +22,15 @@
             <a class="dashboard-nav-link active" th:href="@{/gigs}">
                 Explore gigs
             </a>
-            <a class="dashboard-nav-link" th:href="@{/dashboard}">
-                Dashboard
-            </a>
+            <a class="dashboard-nav-link" th:href="@{/gigs/new}">Post a gig</a>
+            <a class="dashboard-nav-link" th:href="@{/applications/my}">My applications</a>
+            <a class="dashboard-nav-link" th:href="@{/applications/received}">Manage applicants</a>
+            <a class="dashboard-nav-link" th:href="@{/profile}">My profile</a>
+            <a class="dashboard-nav-link" th:href="@{/dashboard}">Dashboard</a>
+            <a class="dashboard-nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Admin</a>
         </div>
 
         <div class="gigs-header-actions">
-            <a class="button button-primary button-small"
-               th:href="@{/gigs/new}">
-                + Post a gig
-            </a>
             <form th:action="@{/logout}" method="post" class="logout-form">
                 <button class="button button-secondary button-small"
                         type="submit">Log out</button>
