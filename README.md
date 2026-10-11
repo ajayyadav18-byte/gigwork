@@ -98,7 +98,7 @@ those sample listings are not real database records.
 | Posting and details | Server-side field and budget validation, creator association, persistence, open detail view, and missing/removed listing handling are tested. |
 | Applications | CSRF-protected submission, duplicate/self-application prevention, applicant/owner-scoped views, owner-only pending status decisions, and persistence are tested. |
 | Admin moderation | `ROLE_ADMIN`-only panel, summary counts, and reversible remove/reopen status changes without deleting listings are tested. |
-| Production database | Environment-only MySQL settings, TLS URL support, Flyway schema migration, and Hibernate validation are configured. Aiven TLS authentication to `defaultdb` was verified with a read-only `SELECT 1`; Spring Boot startup, Flyway, and application persistence against Aiven remain unverified. |
+| Production database | Environment-only MySQL settings, TLS URL support, Flyway schema migration, and Hibernate validation are configured. Aiven TLS authentication was verified, and the production profile started against the empty Aiven database and served the public pages. App-level CRUD persistence against Aiven remains unverified. |
 | Build and deployment | Maven tests and executable jar build can be verified locally. Docker build is not verified because Docker is unavailable; deployment remains intentionally pending. |
 | Repository and data | The workspace is secret-scanned and pushed to the private [GitHub repository](https://github.com/ajayyadav18-byte/gigwork). Any local-to-cloud data migration remains pending. Application startup does not copy or delete local records. |
 
@@ -118,9 +118,12 @@ listings are not persisted jobs and are labeled as illustrative.
 - [x] Aiven network, TLS, and `avnadmin` authentication verified with a
   read-only `SELECT 1` against `defaultdb`; the rotated password was entered
   privately and was not added to the project.
-- [ ] Spring Boot production-profile startup, Flyway schema validation, and
-  application persistence against Aiven remain untested. Startup can create
-  the app tables on an empty Aiven database; no local data has been imported.
+- [x] Spring Boot production-profile startup against Aiven succeeded; Flyway
+  initialized the empty database and public pages served successfully on port
+  8081. No local data was imported.
+- [ ] App-level CRUD persistence against Aiven remains untested. Core persistence
+  flows are covered by the isolated H2 integration suite; no cloud test account
+  or marketplace records were created.
 - [x] Local Git repository initialized; the first commit contains the reviewed
   project files and excludes `.env`, build output, and key files.
 - [x] Private GitHub repository created and the reviewed `main` branch pushed:
