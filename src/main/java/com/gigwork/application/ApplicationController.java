@@ -49,9 +49,16 @@ public class ApplicationController {
 
         User user = getLoggedInUser(authentication);
 
-        model.addAttribute(
-                "applications",
-                applicationService.getMyApplications(user));
+        var applications = applicationService.getMyApplications(user);
+        model.addAttribute("applications", applications);
+        model.addAttribute("pendingCount", applications.stream()
+                .filter(application -> "PENDING".equalsIgnoreCase(
+                        application.getStatus()))
+                .count());
+        model.addAttribute("acceptedCount", applications.stream()
+                .filter(application -> "ACCEPTED".equalsIgnoreCase(
+                        application.getStatus()))
+                .count());
 
         return "applications/my";
     }
@@ -61,9 +68,16 @@ public class ApplicationController {
             Authentication authentication, Model model) {
 
         User employer = getLoggedInUser(authentication);
-        model.addAttribute(
-                "applications",
-                applicationService.getReceivedApplications(employer));
+        var applications = applicationService.getReceivedApplications(employer);
+        model.addAttribute("applications", applications);
+        model.addAttribute("pendingCount", applications.stream()
+                .filter(application -> "PENDING".equalsIgnoreCase(
+                        application.getStatus()))
+                .count());
+        model.addAttribute("acceptedCount", applications.stream()
+                .filter(application -> "ACCEPTED".equalsIgnoreCase(
+                        application.getStatus()))
+                .count());
 
         return "applications/received";
     }

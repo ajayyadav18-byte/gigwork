@@ -180,6 +180,7 @@ class GigWorkApplicationTests {
     @Test
     void dashboardNavigationKeepsAuthenticatedBrandLinksAndAdminLinkScoped() throws Exception {
         User current = createUser("Current Member", "current@example.test");
+        createUser("Admin Member", "admin@example.test");
 
         mockMvc.perform(get("/dashboard")
                         .with(user(current.getEmail()).roles("USER")))
@@ -198,6 +199,39 @@ class GigWorkApplicationTests {
         mockMvc.perform(get("/login"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("href=\"/\"")));
+    }
+
+    @Test
+    void dashboardShowsLiveCountsAndRecentOpenGigs() throws Exception {
+        User owner = createUser("Gig Owner", "owner@example.test");
+        User applicant = createUser("Applicant", "applicant@example.test");
+        Gig openGig = createGig(owner, "Campus portfolio showcase", "Remote",
+                "Technology", "OPEN");
+        createGig(owner, "Removed listing", "Remote", "Technology", "REMOVED");
+
+        mockMvc.perform(post("/applications/apply/" + openGig.getId())
+                        .with(user(applicant.getEmail()).roles("USER"))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+
+        mockMvc.perform(get("/dashboard")
+                        .with(user(owner.getEmail()).roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers
+                        .model().attribute("gigCount", 1L))
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers
+                        .model().attribute("applicationCount", 0))
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers
+                        .model().attribute("receivedApplicationCount", 1))
+                .andExpect(content().string(containsString("Campus portfolio showcase")));
+
+        mockMvc.perform(get("/dashboard")
+                        .with(user(applicant.getEmail()).roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers
+                        .model().attribute("applicationCount", 1))
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers
+                        .model().attribute("receivedApplicationCount", 0));
     }
 
     @Test

@@ -15,6 +15,10 @@ public interface GigRepository extends JpaRepository<Gig, Long> {
 
     List<Gig> findByStatusOrderByCreatedAtDesc(String status);
 
+    long countByCreatorIdAndStatusIgnoreCase(Long creatorId, String status);
+
+    boolean existsByCreatorIdAndTitleIgnoreCase(Long creatorId, String title);
+
     List<Gig> findByStatusAndCategoryIgnoreCaseOrderByCreatedAtDesc(
             String status,
             String category

@@ -98,14 +98,22 @@ those sample listings are not real database records.
 | Posting and details | Server-side field and budget validation, creator association, persistence, open detail view, and missing/removed listing handling are tested. |
 | Applications | CSRF-protected submission, duplicate/self-application prevention, applicant/owner-scoped views, owner-only pending status decisions, and persistence are tested. |
 | Admin moderation | `ROLE_ADMIN`-only panel, summary counts, and reversible remove/reopen status changes without deleting listings are tested. |
+| Member workspace | The dashboard shows live counts for open gigs, submitted applications, incoming applications, and the latest marketplace listings. Showcase gigs are optional, clearly disclosed college-demo briefs and are disabled by default. |
 | Production database | Environment-only MySQL settings, TLS URL support, Flyway schema migration, and Hibernate validation are configured. Aiven TLS authentication was verified, and the production profile started against the empty Aiven database and served the public pages. App-level CRUD persistence against Aiven remains unverified. |
-| Build and deployment | Maven tests and executable jar build can be verified locally. Docker build is not verified because Docker is unavailable; deployment remains intentionally pending. |
+| Build and deployment | Maven tests and executable jar build can be verified locally. The Render service is live and connected to the private GitHub repository; updates deploy from `main`. Docker build is not verified because Docker is unavailable. |
 | Repository and data | The workspace is secret-scanned and pushed to the private [GitHub repository](https://github.com/ajayyadav18-byte/gigwork). Any local-to-cloud data migration remains pending. Application startup does not copy or delete local records. |
 
 The integration suite uses an isolated H2 database and covers template rendering,
 database persistence, authentication, authorization, CSRF, navigation, gig
 creation/search, applications, profiles, and moderation. Landing-page demo
 listings are not persisted jobs and are labeled as illustrative.
+
+The optional `GIGWORK_DEMO_SEED_ENABLED=true` setting adds five sample gigs to
+an already-registered owner whose email is supplied through
+`GIGWORK_DEMO_OWNER_EMAIL`. Their on-site titles and descriptions read like
+ordinary gigs. The seeder is disabled by default and skips listings that
+already exist, so it does not create accounts or duplicate sample rows on later
+restarts.
 
 ### Completion checklist
 

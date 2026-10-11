@@ -2,69 +2,78 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0d18">
     <title>My Applications | GigWork</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body class="gigs-page">
-<header class="navbar">
-    <a class="brand" th:href="@{/dashboard}">GigWork<span>.</span></a>
-    <nav class="dashboard-nav">
-        <a th:href="@{/gigs}">Explore gigs</a>
-        <a th:href="@{/dashboard}">Dashboard</a>
+<body class="gigs-page workspace-page">
+<header class="site-header">
+    <nav class="navbar container" aria-label="Main navigation">
+        <a class="brand" th:href="@{/dashboard}"><span class="brand-mark">G</span><span>gig<span class="brand-accent">work</span></span></a>
+        <div class="dashboard-nav">
+            <a class="dashboard-nav-link" th:href="@{/gigs}">Explore gigs</a>
+            <a class="dashboard-nav-link" th:href="@{/dashboard}">Dashboard</a>
+        </div>
+        <div class="gigs-header-actions">
+            <a class="button button-primary button-small" th:href="@{/gigs}">Find a gig</a>
+            <form class="logout-form" th:action="@{/logout}" method="post"><button class="button button-secondary button-small" type="submit">Log out</button></form>
+        </div>
     </nav>
-    <form th:action="@{/logout}" method="post">
-        <button class="button button-secondary" type="submit">Log out</button>
-    </form>
 </header>
 
-<main class="applications-page">
-    <section class="post-gig-heading">
-        <p class="eyebrow">YOUR CAREER</p>
-        <h1>My applications<span>.</span></h1>
-        <p>Track opportunities you've applied for and check their status.</p>
+<main class="container applications-page">
+    <section class="applications-hero">
+        <div>
+            <a class="applications-back-link" th:href="@{/dashboard}">← Back to dashboard</a>
+            <span class="section-eyebrow">YOUR CAREER TRACKER</span>
+            <h1>My applications<span class="gradient-text">.</span></h1>
+            <p>Every opportunity you’ve pursued, in one place. Keep an eye on your status and next steps.</p>
+        </div>
+        <div class="applications-hero-art" aria-hidden="true"><span>◎</span><small>YOUR<br>NEXT MOVE</small></div>
     </section>
 
-    <div class="application-list"
-         th:if="${!#lists.isEmpty(applications)}">
-        <article class="gig-card"
-                 th:each="applicationRecord : ${applications}">
-            <div class="gig-card-content">
-                <span class="gig-category"
-                      th:text="${applicationRecord.gig.category}">Category</span>
-                <h2 th:text="${applicationRecord.gig.title}">Gig title</h2>
-                <p th:text="${applicationRecord.gig.location}">Remote</p>
-                <p>
-                    Applied:
-                    <span th:text="${#temporals.format(applicationRecord.createdAt, 'dd MMM yyyy')}">
-                        Date
-                    </span>
-                </p>
+    <section class="application-stats" aria-label="Application summary">
+        <div class="application-stat"><span class="application-stat-icon">↗</span><span>Applications sent</span><strong th:text="${applications.size()}">0</strong></div>
+        <div class="application-stat"><span class="application-stat-icon pending-icon">◷</span><span>Awaiting a reply</span><strong th:text="${pendingCount}">0</strong></div>
+        <div class="application-stat"><span class="application-stat-icon accepted-icon">✓</span><span>Accepted</span><strong th:text="${acceptedCount}">0</strong></div>
+    </section>
+
+    <div class="applications-list-heading" th:if="${!#lists.isEmpty(applications)}">
+        <div><span class="section-eyebrow">YOUR ACTIVITY</span><h2>Application history</h2></div>
+        <span class="applications-count" th:text="${applications.size()} + ' total'">0 total</span>
+    </div>
+
+    <div class="application-list application-list-polished" th:if="${!#lists.isEmpty(applications)}">
+        <article class="gig-card application-card" th:each="applicationRecord : ${applications}">
+            <div class="application-card-main">
+                <div class="application-card-mark" aria-hidden="true">✦</div>
+                <div class="gig-card-content">
+                    <div class="application-card-meta">
+                        <span class="gig-category" th:text="${applicationRecord.gig.category}">Category</span>
+                        <span class="application-location">⌖ <span th:text="${applicationRecord.gig.location}">Remote</span></span>
+                    </div>
+                    <h2 th:text="${applicationRecord.gig.title}">Gig title</h2>
+                    <p class="application-date">Applied <span th:text="${#temporals.format(applicationRecord.createdAt, 'dd MMM yyyy')}">Date</span></p>
+                </div>
             </div>
-            <div class="application-status">
+            <div class="application-card-side">
                 <span th:text="${applicationRecord.status}"
-                      th:class="'status-badge status-' + ${#strings.toLowerCase(applicationRecord.status)}">
-                    PENDING
-                </span>
-                <p class="gig-budget">
-                    ₹<span th:text="${#numbers.formatDecimal(applicationRecord.gig.budget, 1, 'COMMA', 2, 'POINT')}">0.00</span>
-                </p>
-                <a class="button button-secondary"
-                   th:href="@{/gigs/{id}(id=${applicationRecord.gig.id})}">
-                    View gig
-                </a>
+                      th:class="'status-badge status-' + ${#strings.toLowerCase(applicationRecord.status)}">PENDING</span>
+                <strong class="application-budget">₹<span th:text="${#numbers.formatDecimal(applicationRecord.gig.budget, 1, 'COMMA', 0, 'POINT')}">0</span><small>gig budget</small></strong>
+                <a class="button button-secondary button-small" th:href="@{/gigs/{id}(id=${applicationRecord.gig.id})}">View opportunity <span aria-hidden="true">→</span></a>
             </div>
         </article>
     </div>
 
-    <section class="empty-state"
-             th:if="${#lists.isEmpty(applications)}">
-        <h2>Your next opportunity starts here.</h2>
-        <p>You haven't applied to any gigs yet.</p>
-        <a class="button button-primary" th:href="@{/gigs}">
-            Explore opportunities
-        </a>
+    <section class="applications-empty-state" th:if="${#lists.isEmpty(applications)}">
+        <div class="empty-orbit" aria-hidden="true"><span>↗</span></div>
+        <span class="section-eyebrow">YOUR NEXT CHAPTER</span>
+        <h2>Your first application is one good gig away.</h2>
+        <p>Explore projects that fit your interests, then apply with confidence. Your updates will show here.</p>
+        <a class="button button-primary" th:href="@{/gigs}">Explore opportunities <span aria-hidden="true">→</span></a>
     </section>
 </main>
+<footer class="site-footer"><div class="container footer-layout"><a class="brand footer-brand" th:href="@{/dashboard}"><span class="brand-mark">G</span><span>gig<span class="brand-accent">work</span></span></a><p>© 2026 GigWork · College Project</p><a class="back-to-top" th:href="@{/applications/received}">Manage your listings ↑</a></div></footer>
 </body>
 </html>

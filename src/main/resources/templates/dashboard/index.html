@@ -1,126 +1,140 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0d18">
     <title>Your Dashboard | GigWork</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body>
+<body class="gigs-page workspace-page">
 
 <header class="site-header">
-    <div class="container navbar">
+    <nav class="navbar container" aria-label="Main navigation">
         <a class="brand" th:href="@{/dashboard}">
             <span class="brand-mark">G</span>
-            <span>Gig<span class="brand-accent">Work</span></span>
+            <span>gig<span class="brand-accent">work</span></span>
         </a>
-
-        <nav class="dashboard-nav">
-            <a class="dashboard-nav-link" th:href="@{/gigs}">Browse opportunities</a>
+        <div class="dashboard-nav">
+            <a class="dashboard-nav-link" th:href="@{/gigs}">Explore gigs</a>
             <a class="dashboard-nav-link" th:href="@{/gigs/new}">Post a gig</a>
             <a class="dashboard-nav-link" sec:authorize="hasRole('ADMIN')"
                th:href="@{/admin}">Admin</a>
+        </div>
+        <div class="gigs-header-actions">
+            <a class="workspace-profile-link" th:href="@{/profile}">
+                <span class="workspace-avatar"
+                      th:text="${#strings.substring(user.name, 0, 1).toUpperCase()}">A</span>
+                <span th:text="${user.name}">Member</span>
+            </a>
             <form class="logout-form" th:action="@{/logout}" method="post">
-                <button class="button button-secondary button-small" type="submit">
-                    Log out
-                </button>
+                <button class="button button-secondary button-small" type="submit">Log out</button>
             </form>
-        </nav>
-    </div>
+        </div>
+    </nav>
 </header>
 
 <main class="container dashboard-page">
-
     <section class="dashboard-welcome">
-        <span class="section-eyebrow">YOUR WORKSPACE</span>
-        <h1>Welcome back<span class="gradient-text">.</span></h1>
-        <p>Find your next opportunity, showcase your skills, and keep your work moving.</p>
-
-        <div class="dashboard-primary-actions">
-            <a class="button button-primary" th:href="@{/gigs}">
-                Browse opportunities <span aria-hidden="true">→</span>
-            </a>
-            <a class="button button-secondary" th:href="@{/gigs/new}">
-                + Post a gig
-            </a>
-        </div>
-    </section>
-
-    <section class="dashboard-section">
-        <div class="dashboard-section-heading">
-            <div>
-                <span class="section-eyebrow">GET STARTED</span>
-                <h2>Your workspace</h2>
-                <p>Choose what you'd like to do next.</p>
+        <div class="dashboard-welcome-copy">
+            <span class="section-eyebrow"><span class="status-dot"></span> YOUR GIGWORK WORKSPACE</span>
+            <h1>Welcome back, <span class="gradient-text" th:text="${user.name}">Ajay</span>.</h1>
+            <p>Your next opportunity, application update, or great hire starts here.</p>
+            <div class="dashboard-primary-actions">
+                <a class="button button-primary" th:href="@{/gigs}">Explore opportunities <span aria-hidden="true">→</span></a>
+                <a class="button button-secondary" th:href="@{/gigs/new}">＋ Post a gig</a>
             </div>
         </div>
-
-        <div class="dashboard-card-grid">
-
-            <a class="dashboard-feature-card" th:href="@{/gigs}">
-                <div class="dashboard-card-icon">⌕</div>
-                <span class="dashboard-card-label">FIND WORK</span>
-                <h3>Browse opportunities</h3>
-                <p>Discover projects across design, technology, writing, marketing, and more.</p>
-                <span class="dashboard-card-link">Explore gigs →</span>
-            </a>
-
-            <a class="dashboard-feature-card" th:href="@{/gigs/new}">
-                <div class="dashboard-card-icon">＋</div>
-                <span class="dashboard-card-label">HIRE TALENT</span>
-                <h3>Post a gig</h3>
-                <p>Publish a project with a description, category, location, and budget.</p>
-                <span class="dashboard-card-link">Create a listing →</span>
-            </a>
-
-            <a class="dashboard-feature-card" th:href="@{/applications/my}">
-                <div class="dashboard-card-icon">↗</div>
-                <span class="dashboard-card-label">YOUR ACTIVITY</span>
-                <h3>My applications</h3>
-                <p>Open your application area to track opportunities you've applied for.</p>
-                <span class="dashboard-card-link">View applications →</span>
-            </a>
-
-            <a class="dashboard-feature-card" th:href="@{/applications/received}">
-                <div class="dashboard-card-icon">✓</div>
-                <span class="dashboard-card-label">YOUR LISTINGS</span>
-                <h3>Manage applicants</h3>
-                <p>Review applications submitted to gigs you've posted.</p>
-                <span class="dashboard-card-link">Review applicants →</span>
-            </a>
-
-            <a class="dashboard-feature-card" th:href="@{/profile}">
-                <div class="dashboard-card-icon">◎</div>
-                <span class="dashboard-card-label">YOUR IDENTITY</span>
-                <h3>My profile</h3>
-                <p>Keep your professional information ready for future marketplace features.</p>
-                <span class="dashboard-card-link">View profile →</span>
-            </a>
-
+        <div class="dashboard-hero-note" aria-hidden="true">
+            <span class="dashboard-note-orbit orbit-one"></span>
+            <span class="dashboard-note-orbit orbit-two"></span>
+            <div class="dashboard-note-center"><span>GW</span><small>MAKE IT<br>HAPPEN</small></div>
         </div>
     </section>
 
-    <section class="dashboard-account-panel">
-        <div>
-            <span class="section-eyebrow">SIGNED-IN ACCOUNT</span>
-            <h2 th:text="${email}">your@email.com</h2>
-            <p>You're signed in to GigWork.</p>
+    <section class="workspace-stats" aria-label="Your activity at a glance">
+        <div class="workspace-stat">
+            <span class="workspace-stat-icon">↗</span>
+            <span class="workspace-stat-label">Gigs posted</span>
+            <strong th:text="${gigCount}">0</strong>
+            <span class="workspace-stat-foot">Your open opportunities</span>
         </div>
-        <a class="button button-secondary" th:href="@{/gigs}">
-            Explore marketplace →
+        <a class="workspace-stat" th:href="@{/applications/my}">
+            <span class="workspace-stat-icon">◎</span>
+            <span class="workspace-stat-label">Applications sent</span>
+            <strong th:text="${applicationCount}">0</strong>
+            <span class="workspace-stat-foot">Track your progress</span>
+        </a>
+        <a class="workspace-stat" th:href="@{/applications/received}">
+            <span class="workspace-stat-icon">✦</span>
+            <span class="workspace-stat-label">Applicants to review</span>
+            <strong th:text="${receivedApplicationCount}">0</strong>
+            <span class="workspace-stat-foot">Keep your hiring moving</span>
         </a>
     </section>
 
+    <section class="dashboard-content-grid">
+        <div class="dashboard-opportunities-panel">
+            <div class="dashboard-section-heading">
+                <div>
+                    <span class="section-eyebrow">FRESH FROM THE MARKETPLACE</span>
+                    <h2>Opportunities for you</h2>
+                    <p>A few of the latest open gigs from the community.</p>
+                </div>
+                <a class="text-action" th:href="@{/gigs}">See all <span aria-hidden="true">↗</span></a>
+            </div>
+
+            <div class="dashboard-gig-list" th:if="${!latestGigs.isEmpty()}">
+                <a class="dashboard-gig-row" th:each="gig : ${latestGigs}"
+                   th:href="@{/gigs/{id}(id=${gig.id})}">
+                    <span class="dashboard-gig-symbol" aria-hidden="true">✦</span>
+                    <span class="dashboard-gig-copy">
+                        <span class="gig-category" th:text="${gig.category}">Technology</span>
+                        <strong th:text="${gig.title}">Gig title</strong>
+                        <small><span th:text="${gig.location}">Remote</span> · Posted by a member</small>
+                    </span>
+                    <span class="dashboard-gig-budget">₹<span th:text="${#numbers.formatDecimal(gig.budget, 1, 'COMMA', 0, 'POINT')}">0</span><small>budget</small></span>
+                    <span class="dashboard-gig-arrow" aria-hidden="true">→</span>
+                </a>
+            </div>
+
+            <div class="dashboard-feed-empty" th:if="${latestGigs.isEmpty()}">
+                <span class="feed-empty-mark">✦</span>
+                <div>
+                    <h3>Your marketplace is ready.</h3>
+                    <p>New community gigs will appear here. Start by exploring or posting an opportunity.</p>
+                </div>
+                <a class="button button-primary button-small" th:href="@{/gigs/new}">Post the first gig</a>
+            </div>
+        </div>
+
+        <aside class="dashboard-shortcuts">
+            <span class="section-eyebrow">QUICK ACCESS</span>
+            <h2>Keep things moving</h2>
+            <a class="workspace-shortcut" th:href="@{/applications/my}">
+                <span class="shortcut-icon">◎</span><span><strong>My applications</strong><small>See status updates</small></span><span>↗</span>
+            </a>
+            <a class="workspace-shortcut" th:href="@{/applications/received}">
+                <span class="shortcut-icon">✦</span><span><strong>Manage applicants</strong><small>Review your candidates</small></span><span>↗</span>
+            </a>
+            <a class="workspace-shortcut" th:href="@{/profile}">
+                <span class="shortcut-icon">◉</span><span><strong>My profile</strong><small>Update your details</small></span><span>↗</span>
+            </a>
+            <div class="dashboard-account-note">
+                <span class="account-note-mark">✓</span>
+                <span><strong>You're all set</strong><small th:text="${user.email}">member@email.com</small></span>
+            </div>
+        </aside>
+    </section>
 </main>
 
 <footer class="site-footer">
     <div class="container footer-layout">
-        <span>© 2026 GigWork</span>
-        <span>Find work. Build skills. Move forward.</span>
+        <a class="brand footer-brand" th:href="@{/dashboard}"><span class="brand-mark">G</span><span>gig<span class="brand-accent">work</span></span></a>
+        <p>© 2026 GigWork · College Project</p>
+        <a class="back-to-top" th:href="@{/gigs}">Explore opportunities ↑</a>
     </div>
 </footer>
-
 </body>
 </html>
