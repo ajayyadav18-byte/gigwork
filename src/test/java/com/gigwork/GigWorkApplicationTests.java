@@ -3,6 +3,7 @@ package com.gigwork;
 import com.gigwork.application.GigApplication;
 import com.gigwork.application.GigApplicationRepository;
 import com.gigwork.gig.Gig;
+import com.gigwork.gig.DemoGigSeeder;
 import com.gigwork.gig.GigRepository;
 import com.gigwork.user.User;
 import com.gigwork.user.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -41,6 +43,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@TestPropertySource(properties = {
+        "gigwork.demo.seed-enabled=true",
+        "gigwork.demo.owner-email=showcase-owner@example.test"
+})
 class GigWorkApplicationTests {
 
     @Autowired
@@ -57,6 +63,9 @@ class GigWorkApplicationTests {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private DemoGigSeeder demoGigSeeder;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -114,6 +123,26 @@ class GigWorkApplicationTests {
                         .param("password", "incorrect-password"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?error"));
+    }
+
+    @Test
+    void configuredOwnerRegistrationReceivesIdempotentSampleGigs() {
+        User owner = userService.register(
+                "Showcase Owner", "SHOWCASE-OWNER@example.test", "safe-pass-123");
+
+        assertEquals(5, gigRepository.countByCreatorIdAndStatusIgnoreCase(
+                owner.getId(), "OPEN"));
+
+        demoGigSeeder.seedForOwner(owner);
+        assertEquals(5, gigRepository.countByCreatorIdAndStatusIgnoreCase(
+                owner.getId(), "OPEN"));
+
+        Gig firstGig = gigRepository.findByStatusOrderByCreatedAtDesc("OPEN").stream()
+                .filter(gig -> gig.getTitle().equals(
+                        "Build a responsive student portfolio"))
+                .findFirst()
+                .orElseThrow();
+        assertTrue(firstGig.getDescription().startsWith("Create a polished"));
     }
 
     @Test

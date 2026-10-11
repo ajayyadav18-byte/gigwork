@@ -80,7 +80,16 @@ public class DemoGigSeeder implements ApplicationRunner {
         User owner = userRepository.findByEmailIgnoreCase(ownerEmail)
                 .orElse(null);
         if (owner == null) {
-            log.warn("Showcase listings were not added because the configured owner account is not registered.");
+            log.info("Showcase listings are waiting for the configured owner to register.");
+            return;
+        }
+
+        seedForOwner(owner);
+    }
+
+    public void seedForOwner(User owner) {
+        if (owner == null || ownerEmail == null
+                || !owner.getEmail().equalsIgnoreCase(ownerEmail.trim())) {
             return;
         }
 
@@ -102,7 +111,7 @@ public class DemoGigSeeder implements ApplicationRunner {
             created++;
         }
 
-        log.info("Created {} college-project showcase listings.", created);
+        log.info("Created {} showcase listings.", created);
     }
 
     private record DemoGig(

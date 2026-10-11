@@ -113,7 +113,8 @@ an already-registered owner whose email is supplied through
 `GIGWORK_DEMO_OWNER_EMAIL`. Their on-site titles and descriptions read like
 ordinary gigs. The seeder is disabled by default and skips listings that
 already exist, so it does not create accounts or duplicate sample rows on later
-restarts.
+restarts. If the configured owner has not registered yet, the seeder waits and
+adds the gigs when that email registers.
 
 ### Completion checklist
 

@@ -1,7 +1,9 @@
 
 package com.gigwork.user;
 
+import com.gigwork.gig.DemoGigSeeder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,12 +14,15 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ObjectProvider<DemoGigSeeder> demoGigSeederProvider;
 
     public UserService(
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            ObjectProvider<DemoGigSeeder> demoGigSeederProvider) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.demoGigSeederProvider = demoGigSeederProvider;
     }
 
     @Transactional
@@ -59,7 +64,9 @@ public class UserService {
                 UserRole.USER
         );
 
-        return userRepository.save(user);
+        User registeredUser = userRepository.save(user);
+        demoGigSeederProvider.ifAvailable(seeder -> seeder.seedForOwner(registeredUser));
+        return registeredUser;
     }
 }
 
