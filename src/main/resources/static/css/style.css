@@ -2342,6 +2342,14 @@ select:focus-visible {
     transition: border-color var(--transition), box-shadow var(--transition);
 }
 
+.post-gig-form input,
+.post-gig-form select {
+    height: 52px;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 1.2;
+}
+
 .post-gig-form textarea {
     min-height: 170px;
     resize: vertical;
@@ -3120,6 +3128,10 @@ select:focus-visible {
     text-decoration: none;
 }
 
+.workspace-profile-link > span:last-child {
+    white-space: nowrap;
+}
+
 .workspace-profile-link:hover {
     color: var(--text);
 }
@@ -3428,7 +3440,6 @@ select:focus-visible {
     .workspace-page .navbar { flex-wrap: wrap; gap: 12px; padding-top: 12px; padding-bottom: 12px; }
     .workspace-page .dashboard-nav { display: flex; order: 3; flex-basis: 100%; justify-content: flex-start; gap: 16px; overflow-x: auto; padding: 5px 0; }
     .workspace-page .dashboard-nav-link { flex: 0 0 auto; white-space: nowrap; }
-    .workspace-profile-link > span:last-child { display: none; }
     .workspace-page .gigs-header-actions { gap: 10px; }
     .dashboard-page,.applications-page { width: min(100% - 28px, 560px); padding-top: 22px; }
     .applications-page { margin-top: 22px; }
