@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Received Applications | GigWork</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="gigs-page">
+
+<header class="navbar">
+    <a class="brand" th:href="@{/dashboard}">GigWork<span>.</span></a>
+    <nav class="dashboard-nav">
+        <a th:href="@{/gigs}">Explore gigs</a>
+        <a th:href="@{/applications/my}">My applications</a>
+        <a th:href="@{/dashboard}">Dashboard</a>
+    </nav>
+    <form th:action="@{/logout}" method="post">
+        <button class="button button-secondary" type="submit">Log out</button>
+    </form>
+</header>
+
+<main class="applications-page">
+    <section class="post-gig-heading">
+        <p class="eyebrow">EMPLOYER WORKSPACE</p>
+        <h1>Manage applicants<span>.</span></h1>
+        <p>Review candidates and make decisions on your opportunities.</p>
+    </section>
+
+    <div class="alert alert-success"
+         th:if="${successMessage}"
+         th:text="${successMessage}"></div>
+
+    <div class="alert alert-error"
+         th:if="${errorMessage}"
+         th:text="${errorMessage}"></div>
+
+    <section class="application-list"
+             th:if="${!#lists.isEmpty(applications)}">
+        <article class="gig-card"
+                 th:each="applicationRecord : ${applications}">
+
+            <div class="gig-card-content">
+                <span class="gig-category"
+                      th:text="${applicationRecord.gig.category}">Category</span>
+
+                <h2 th:text="${applicationRecord.gig.title}">Gig title</h2>
+
+                <p>
+                    Applicant:
+                    <strong th:text="${applicationRecord.applicant.name}">
+                        Applicant name
+                    </strong>
+                </p>
+
+                <p>
+                    Email:
+                    <a th:href="'mailto:' + ${applicationRecord.applicant.email}"
+                       th:text="${applicationRecord.applicant.email}">
+                        applicant@example.com
+                    </a>
+                </p>
+
+                <p>
+                    Applied:
+                    <span th:text="${#temporals.format(
+                        applicationRecord.createdAt, 'dd MMM yyyy')}">
+                        Date
+                    </span>
+                </p>
+
+                <a th:href="@{/gigs/{id}(id=${applicationRecord.gig.id})}">
+                    View gig details
+                </a>
+            </div>
+
+            <div class="application-status">
+                <span class="status-badge"
+                      th:classappend="' status-' +
+                          ${#strings.toLowerCase(applicationRecord.status)}"
+                      th:text="${applicationRecord.status}">
+                    PENDING
+                </span>
+
+                <div th:if="${applicationRecord.status == 'PENDING'}"
+                     class="employer-actions">
+
+                    <form th:action="@{/applications/{id}/status(
+                              id=${applicationRecord.id})}"
+                          method="post">
+                        <input type="hidden" name="status" value="ACCEPTED">
+                        <button class="button button-primary" type="submit">
+                            Accept
+                        </button>
+                    </form>
+
+                    <form th:action="@{/applications/{id}/status(
+                              id=${applicationRecord.id})}"
+                          method="post">
+                        <input type="hidden" name="status" value="REJECTED">
+                        <button class="button button-secondary" type="submit">
+                            Reject
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="empty-state"
+             th:if="${#lists.isEmpty(applications)}">
+        <h2>No applications received yet.</h2>
+        <p>Applications for gigs you publish will appear here.</p>
+        <a class="button button-primary" th:href="@{/gigs/new}">
+            Post a gig
+        </a>
+    </section>
+</main>
+
+</body>
+</html>

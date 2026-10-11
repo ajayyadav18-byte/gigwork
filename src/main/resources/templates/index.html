@@ -1,0 +1,340 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1020">
+    <meta name="description" content="Discover opportunities, share your skills, and find your next gig with GigWork.">
+    <title>GigWork — Find your next opportunity</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+<body>
+<header class="site-header">
+    <nav class="navbar container" aria-label="Main navigation">
+        <a class="brand" href="/" aria-label="GigWork home">
+            <span class="brand-mark">G</span>
+            <span>gig<span class="brand-accent">work</span></span>
+        </a>
+
+        <button class="menu-toggle" id="menuToggle"
+                aria-label="Toggle navigation" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+
+        <div class="nav-links" id="navLinks">
+            <a class="nav-link active" href="#home">Explore</a>
+            <a class="nav-link" href="#categories">Categories</a>
+            <a class="nav-link" href="#how-it-works">How it works</a>
+        </div>
+
+        <div class="nav-actions">
+            <a class="login-link" href="/login">Log in</a>
+            <a class="button button-small button-primary" href="/register">
+                Get started <span aria-hidden="true">↗</span>
+            </a>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <section class="hero section-space" id="home">
+        <div class="hero-glow hero-glow-one"></div>
+        <div class="hero-glow hero-glow-two"></div>
+
+        <div class="container hero-layout">
+            <div class="hero-copy">
+                <div class="eyebrow">
+                    <span class="status-dot"></span>
+                    OPPORTUNITY STARTS HERE
+                </div>
+
+                <h1>
+                    Your next big thing<br>
+                    starts with a <span class="gradient-text">small gig.</span>
+                </h1>
+
+                <p class="hero-description"
+                   th:text="${tagline}">
+                    Your skills. Your opportunities. Your next gig.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="button button-primary button-large" href="#gigs">
+                        Explore opportunities <span aria-hidden="true">→</span>
+                    </a>
+                    <a class="button button-secondary button-large" href="/register">
+                        I'm looking to hire
+                    </a>
+                </div>
+
+                <div class="hero-proof">
+                    <div class="avatar-stack" aria-hidden="true">
+                        <span class="avatar avatar-one">A</span>
+                        <span class="avatar avatar-two">S</span>
+                        <span class="avatar avatar-three">R</span>
+                        <span class="avatar avatar-four">+</span>
+                    </div>
+                    <div>
+                        <strong>Skills meet opportunity</strong>
+                        <p>One gig can start something great.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual" aria-label="GigWork opportunity preview">
+                <div class="visual-orbit orbit-one"></div>
+                <div class="visual-orbit orbit-two"></div>
+
+                <div class="floating-label floating-label-top">
+                    <span class="floating-icon purple-icon">✦</span>
+                    <span><strong>Show your skills</strong><small>Your next chapter awaits</small></span>
+                </div>
+
+                <article class="preview-card">
+                    <div class="preview-topline">
+                        <span class="preview-badge"><span></span> OPPORTUNITY SPOTLIGHT</span>
+                        <span class="preview-menu">•••</span>
+                    </div>
+                    <div class="preview-symbol">✧</div>
+                    <p class="preview-kicker">YOUR NEXT PROJECT</p>
+                    <h2>Make your talent<br>work for you.</h2>
+                    <p class="preview-copy">
+                        Find meaningful work, build experience and turn your
+                        abilities into opportunity.
+                    </p>
+                    <div class="preview-divider"></div>
+                    <div class="preview-bottom">
+                        <div>
+                            <small>YOUR POTENTIAL</small>
+                            <strong>Unlimited <span>↗</span></strong>
+                        </div>
+                        <div class="preview-mini-mark">GW</div>
+                    </div>
+                </article>
+
+                <div class="floating-label floating-label-bottom">
+                    <span class="floating-icon green-icon">↗</span>
+                    <span><strong>Ready for what's next?</strong><small>Start exploring today</small></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="container trust-strip">
+            <span>BUILT FOR AMBITION</span>
+            <span class="trust-line"></span>
+            <span>STUDENTS</span>
+            <span class="trust-separator">·</span>
+            <span>FREELANCERS</span>
+            <span class="trust-separator">·</span>
+            <span>SMALL BUSINESSES</span>
+        </div>
+    </section>
+
+    <section class="opportunities section-space" id="gigs">
+        <div class="container">
+            <div class="section-heading">
+                <div>
+                    <span class="section-eyebrow">FIND YOUR FIT</span>
+                    <h2>Opportunities worth<br class="desktop-break"> showing up for.</h2>
+                    <p class="section-description">
+                        Explore example gigs across skills, interests and industries.
+                    </p>
+                </div>
+                <span class="heading-note"><span class="status-dot"></span> Explore the possibilities</span>
+            </div>
+
+            <div class="search-panel">
+                <label class="search-box" for="gigSearch">
+                    <span class="search-icon" aria-hidden="true">⌕</span>
+                    <input id="gigSearch" type="search"
+                           placeholder="Search gigs, skills or keywords..."
+                           autocomplete="off">
+                </label>
+                <label class="filter-box" for="categoryFilter">
+                    <span aria-hidden="true">▦</span>
+                    <select id="categoryFilter">
+                        <option value="all">All categories</option>
+                        <option value="design">Design & Creative</option>
+                        <option value="technology">Technology</option>
+                        <option value="writing">Writing</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="education">Education</option>
+                    </select>
+                </label>
+                <button class="button button-primary search-button" id="searchButton">
+                    Find gigs <span aria-hidden="true">→</span>
+                </button>
+            </div>
+
+            <div class="category-pills" id="categories">
+                <button class="category-pill selected" data-category="all">✦ All gigs</button>
+                <button class="category-pill" data-category="design">◈ Design</button>
+                <button class="category-pill" data-category="technology">⌘ Technology</button>
+                <button class="category-pill" data-category="writing">✎ Writing</button>
+                <button class="category-pill" data-category="marketing">↗ Marketing</button>
+                <button class="category-pill" data-category="education">▤ Education</button>
+            </div>
+
+            <div class="gig-grid" id="gigGrid">
+                <article class="gig-card" data-category="design"
+                         data-search="social media designer design creative instagram">
+                    <div class="gig-card-top">
+                        <span class="gig-icon icon-lilac">✳</span>
+                    </div>
+                    <div class="gig-meta"><span>DESIGN & CREATIVE</span><span class="gig-type">Remote</span></div>
+                    <h3>Social Media Design</h3>
+                    <p class="gig-description">Create scroll-stopping visuals for a growing brand's social channels.</p>
+                    <div class="skill-tags"><span>Canva</span><span>Design</span><span>Social</span></div>
+                    <div class="gig-card-bottom">
+                        <div><small>EXAMPLE BUDGET</small><strong>₹1,500–₹3,000</strong></div>
+                        <a href="/register" class="gig-arrow" aria-label="Explore this gig">↗</a>
+                    </div>
+                </article>
+
+                <article class="gig-card" data-category="technology"
+                         data-search="website developer technology frontend landing page">
+                    <div class="gig-card-top">
+                        <span class="gig-icon icon-blue">⌘</span>
+                    </div>
+                    <div class="gig-meta"><span>TECHNOLOGY</span><span class="gig-type">Remote</span></div>
+                    <h3>Landing Page Development</h3>
+                    <p class="gig-description">Build a clean, responsive landing page for a small business.</p>
+                    <div class="skill-tags"><span>HTML</span><span>CSS</span><span>Web</span></div>
+                    <div class="gig-card-bottom">
+                        <div><small>EXAMPLE BUDGET</small><strong>₹3,000–₹6,000</strong></div>
+                        <a href="/register" class="gig-arrow" aria-label="Explore this gig">↗</a>
+                    </div>
+                </article>
+
+                <article class="gig-card" data-category="writing"
+                         data-search="content writing blog writer articles research">
+                    <div class="gig-card-top">
+                        <span class="gig-icon icon-peach">✎</span>
+                    </div>
+                    <div class="gig-meta"><span>WRITING</span><span class="gig-type">Flexible</span></div>
+                    <h3>Blog & Content Writing</h3>
+                    <p class="gig-description">Turn research into useful, well-structured articles for readers.</p>
+                    <div class="skill-tags"><span>Writing</span><span>Research</span></div>
+                    <div class="gig-card-bottom">
+                        <div><small>EXAMPLE BUDGET</small><strong>₹800–₹2,000</strong></div>
+                        <a href="/register" class="gig-arrow" aria-label="Explore this gig">↗</a>
+                    </div>
+                </article>
+
+                <article class="gig-card" data-category="marketing"
+                         data-search="digital marketing social media campaign marketing">
+                    <div class="gig-card-top">
+                        <span class="gig-icon icon-green">↗</span>
+                    </div>
+                    <div class="gig-meta"><span>MARKETING</span><span class="gig-type">Remote</span></div>
+                    <h3>Digital Marketing Support</h3>
+                    <p class="gig-description">Help plan a campaign and organize a small business content calendar.</p>
+                    <div class="skill-tags"><span>Marketing</span><span>Planning</span></div>
+                    <div class="gig-card-bottom">
+                        <div><small>EXAMPLE BUDGET</small><strong>₹2,000–₹4,000</strong></div>
+                        <a href="/register" class="gig-arrow" aria-label="Explore this gig">↗</a>
+                    </div>
+                </article>
+
+                <article class="gig-card" data-category="education"
+                         data-search="online tutor education mathematics teaching">
+                    <div class="gig-card-top">
+                        <span class="gig-icon icon-yellow">▤</span>
+                    </div>
+                    <div class="gig-meta"><span>EDUCATION</span><span class="gig-type">Flexible</span></div>
+                    <h3>Online Tutoring</h3>
+                    <p class="gig-description">Help a school student understand concepts through friendly lessons.</p>
+                    <div class="skill-tags"><span>Teaching</span><span>Learning</span></div>
+                    <div class="gig-card-bottom">
+                        <div><small>EXAMPLE BUDGET</small><strong>₹300–₹700</strong></div>
+                        <a href="/register" class="gig-arrow" aria-label="Explore this gig">↗</a>
+                    </div>
+                </article>
+
+                <article class="gig-card" data-category="technology"
+                         data-search="data entry spreadsheet excel technology administration">
+                    <div class="gig-card-top">
+                        <span class="gig-icon icon-teal">▦</span>
+                    </div>
+                    <div class="gig-meta"><span>TECHNOLOGY</span><span class="gig-type">Remote</span></div>
+                    <h3>Data & Spreadsheet Cleanup</h3>
+                    <p class="gig-description">Organize spreadsheet information and make records easier to use.</p>
+                    <div class="skill-tags"><span>Excel</span><span>Data</span></div>
+                    <div class="gig-card-bottom">
+                        <div><small>EXAMPLE BUDGET</small><strong>₹700–₹1,500</strong></div>
+                        <a href="/register" class="gig-arrow" aria-label="Explore this gig">↗</a>
+                    </div>
+                </article>
+            </div>
+
+            <p class="empty-state" id="emptyState" hidden>
+                No matching example gigs. Try a different keyword or category.
+            </p>
+            <p class="demo-notice">
+                These are illustrative sample listings for the interface preview, not verified paid jobs.
+                Real listings will come from the GigWork database.
+            </p>
+        </div>
+    </section>
+
+    <section class="how-section section-space" id="how-it-works">
+        <div class="container">
+            <div class="section-heading centered-heading">
+                <span class="section-eyebrow">SIMPLE BY DESIGN</span>
+                <h2>From looking to landing.</h2>
+                <p class="section-description">A simple path to your next opportunity.</p>
+            </div>
+
+            <div class="steps-grid">
+                <article class="step-card">
+                    <span class="step-number">01</span>
+                    <div class="step-symbol step-symbol-purple">◎</div>
+                    <h3>Create your profile</h3>
+                    <p>Show what you can do and what kind of opportunities interest you.</p>
+                </article>
+                <article class="step-card">
+                    <span class="step-number">02</span>
+                    <div class="step-symbol step-symbol-blue">⌕</div>
+                    <h3>Discover a gig</h3>
+                    <p>Explore listings that fit your skills, schedule and goals.</p>
+                </article>
+                <article class="step-card">
+                    <span class="step-number">03</span>
+                    <div class="step-symbol step-symbol-green">↗</div>
+                    <h3>Make your move</h3>
+                    <p>Apply for work, connect with an opportunity and build experience.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta">
+        <div class="container cta-layout">
+            <div>
+                <span class="section-eyebrow">YOUR NEXT CHAPTER</span>
+                <h2>Good at something?<br><span>Put it to work.</span></h2>
+                <p>Create your account and take the first step toward your next gig.</p>
+            </div>
+            <a class="button button-light button-large" href="/register">
+                Get started for free <span aria-hidden="true">↗</span>
+            </a>
+            <div class="cta-decoration" aria-hidden="true">✳</div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-layout">
+        <a class="brand footer-brand" href="/">
+            <span class="brand-mark">G</span>
+            <span>gig<span class="brand-accent">work</span></span>
+        </a>
+        <p>Make your skills count. © <span id="currentYear">2026</span> GigWork College Project.</p>
+        <a href="#home" class="back-to-top">Back to top ↑</a>
+    </div>
+</footer>
+</body>
+</html>
+

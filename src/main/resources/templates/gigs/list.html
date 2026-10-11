@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0d18">
+    <title>Explore Gigs | GigWork</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="gigs-page">
+
+<header class="site-header">
+    <nav class="navbar container" aria-label="Main navigation">
+        <a class="brand" th:href="@{/dashboard}">
+            <span class="brand-mark">G</span>
+            <span>gig<span class="brand-accent">work</span></span>
+        </a>
+
+        <div class="dashboard-nav">
+            <a class="dashboard-nav-link active" th:href="@{/gigs}">
+                Explore gigs
+            </a>
+            <a class="dashboard-nav-link" th:href="@{/dashboard}">
+                Dashboard
+            </a>
+        </div>
+
+        <div class="gigs-header-actions">
+            <a class="button button-primary button-small"
+               th:href="@{/gigs/new}">
+                + Post a gig
+            </a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button class="button button-secondary button-small"
+                        type="submit">Log out</button>
+            </form>
+        </div>
+    </nav>
+</header>
+
+<main class="gigs-main container">
+
+    <div class="alert alert-success"
+         th:if="${successMessage}"
+         th:text="${successMessage}"></div>
+
+    <div class="alert alert-error"
+         th:if="${errorMessage}"
+         th:text="${errorMessage}"></div>
+
+    <section class="gigs-hero">
+        <span class="section-eyebrow">THE OPPORTUNITY MARKETPLACE</span>
+        <h1>Find work that <span class="gradient-text">moves you.</span></h1>
+        <p>Discover projects, share your skills and turn your time into opportunity.</p>
+
+        <form th:action="@{/gigs}" method="get" class="gig-search">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input type="search"
+                   name="q"
+                   th:value="${query}"
+                   placeholder="Search design, development, writing..."
+                   aria-label="Search gigs">
+            <input type="hidden"
+                   name="category"
+                   th:value="${selectedCategory}">
+            <button type="submit" class="button button-primary">Search gigs →</button>
+        </form>
+    </section>
+
+    <section class="gigs-results">
+        <div class="gigs-results-heading">
+            <div>
+                <span class="section-eyebrow">DISCOVER</span>
+                <h2>Open opportunities</h2>
+                <p>Explore gigs posted by members of the community.</p>
+            </div>
+
+            <span class="results-count"
+                  th:text="${gigs.size()} + ' opportunities'">0 opportunities</span>
+        </div>
+
+        <div class="category-filters">
+            <a class="category-chip"
+               th:classappend="${selectedCategory == 'all'} ? ' active' : ''"
+               th:href="@{/gigs(q=${query},category='all')}">All categories</a>
+
+            <a class="category-chip"
+               th:each="item : ${categories}"
+               th:text="${item}"
+               th:classappend="${selectedCategory.equalsIgnoreCase(item)} ? ' active' : ''"
+               th:href="@{/gigs(q=${query},category=${item})}">Category</a>
+        </div>
+
+        <div class="gig-list" th:if="${!gigs.isEmpty()}">
+            <article class="gig-card" th:each="gig : ${gigs}">
+                <div class="gig-card-main">
+                    <div class="gig-category-icon" aria-hidden="true">✦</div>
+
+                    <div class="gig-card-content">
+                        <div class="gig-card-meta">
+                            <span class="gig-category"
+                                  th:text="${gig.category}">Technology</span>
+                            <span class="gig-status">
+                                <span class="status-dot"></span> Open
+                            </span>
+                        </div>
+
+                        <h3>
+                            <a th:href="@{/gigs/{id}(id=${gig.id})}"
+                               th:text="${gig.title}">Gig title</a>
+                        </h3>
+
+                        <p class="gig-description"
+                           th:text="${#strings.abbreviate(gig.description, 180)}">
+                            Gig description
+                        </p>
+
+                        <div class="gig-card-details">
+                            <span>⌖ <span th:text="${gig.location}">Remote</span></span>
+                            <span>Posted by a GigWork member</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gig-card-side">
+                    <span class="budget-label">BUDGET</span>
+                    <strong class="gig-budget">
+                        ₹<span th:text="${#numbers.formatDecimal(gig.budget, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+                    </strong>
+                    <a class="gig-view-link"
+                       th:href="@{/gigs/{id}(id=${gig.id})}">
+                        View details →
+                    </a>
+                </div>
+            </article>
+        </div>
+
+        <div class="gig-empty-state" th:if="${gigs.isEmpty()}">
+            <div class="empty-state-icon">⌕</div>
+            <h3>No gigs found yet</h3>
+            <p>
+                There are no matching open gigs in the database.
+                Try another category or publish the first opportunity.
+            </p>
+            <a class="button button-primary" th:href="@{/gigs/new}">
+                + Post the first gig
+            </a>
+        </div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-layout">
+        <a class="brand footer-brand" th:href="@{/dashboard}">
+            <span class="brand-mark">G</span>
+            <span>gig<span class="brand-accent">work</span></span>
+        </a>
+        <p>© 2026 GigWork · College Project</p>
+        <a class="back-to-top" th:href="@{/dashboard}">My dashboard ↑</a>
+    </div>
+</footer>
+
+</body>
+</html>

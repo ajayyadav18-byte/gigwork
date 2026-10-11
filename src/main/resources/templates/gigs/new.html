@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0d18">
+    <title>Post a Gig | GigWork</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="gigs-page">
+
+<header class="site-header">
+    <nav class="navbar container" aria-label="Main navigation">
+        <a class="brand" th:href="@{/dashboard}">
+            <span class="brand-mark">G</span>
+            <span>Gig<span class="brand-accent">Work</span></span>
+        </a>
+
+        <nav class="dashboard-nav" aria-label="Workspace navigation">
+            <a class="dashboard-nav-link" th:href="@{/gigs}">Browse opportunities</a>
+            <a class="dashboard-nav-link" th:href="@{/dashboard}">Dashboard</a>
+        </nav>
+
+        <div class="gigs-header-actions">
+            <form class="logout-form" th:action="@{/logout}" method="post">
+                <button class="button button-secondary button-small" type="submit">
+                    Log out
+                </button>
+            </form>
+        </div>
+    </nav>
+</header>
+
+<main class="container post-gig-page">
+    <a class="gig-back-link" th:href="@{/gigs}">← Back to opportunities</a>
+
+    <section class="post-gig-heading">
+        <span class="section-eyebrow">FOR CLIENTS &amp; CREATORS</span>
+        <h1>Post an opportunity<span class="gradient-text">.</span></h1>
+        <p>Describe your project, set a budget, and connect with the right talent.</p>
+    </section>
+
+    <form class="post-gig-form"
+          th:action="@{/gigs/new}"
+          th:object="${gigForm}"
+          method="post">
+
+        <div class="form-field">
+            <label for="title">Gig title</label>
+            <input id="title" type="text" th:field="*{title}"
+                   placeholder="e.g. Design a premium brand identity"
+                   maxlength="120" required>
+            <p class="field-error" th:if="${#fields.hasErrors('title')}"
+               th:errors="*{title}"></p>
+        </div>
+
+        <div class="form-field">
+            <label for="description">Project description</label>
+            <textarea id="description" th:field="*{description}" rows="7"
+                      maxlength="5000"
+                      placeholder="Describe the work, deliverables, timeline, and skills required..."
+                      required></textarea>
+            <p class="field-hint">Include the deliverables and expectations so applicants understand the work.</p>
+            <p class="field-error" th:if="${#fields.hasErrors('description')}"
+               th:errors="*{description}"></p>
+        </div>
+
+        <div class="post-gig-fields-grid">
+            <div class="form-field">
+                <label for="category">Category</label>
+                <select id="category" th:field="*{category}" required>
+                    <option value="">Choose a category</option>
+                    <option value="Design & Creative">Design &amp; Creative</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Writing">Writing</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Education">Education</option>
+                    <option value="Other">Other</option>
+                </select>
+                <p class="field-error" th:if="${#fields.hasErrors('category')}"
+                   th:errors="*{category}"></p>
+            </div>
+
+            <div class="form-field">
+                <label for="location">Work location</label>
+                <input id="location" type="text" th:field="*{location}"
+                       placeholder="Remote or Hyderabad" maxlength="120">
+                <p class="field-hint">Leave blank if the work can be done remotely.</p>
+                <p class="field-error" th:if="${#fields.hasErrors('location')}"
+                   th:errors="*{location}"></p>
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label for="budget">Total project budget (₹)</label>
+            <input id="budget" type="number" th:field="*{budget}"
+                   min="1" max="1000000" step="0.01"
+                   placeholder="5000.00" required>
+            <p class="field-hint">Minimum ₹1 · Maximum ₹10,00,000 · Up to two decimal places.</p>
+            <p class="field-error" th:if="${#fields.hasErrors('budget')}"
+               th:errors="*{budget}"></p>
+        </div>
+
+        <div class="post-gig-actions">
+            <a class="button button-secondary" th:href="@{/gigs}">Cancel</a>
+            <button class="button button-primary" type="submit">
+                Publish opportunity →
+            </button>
+        </div>
+    </form>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-layout">
+        <a class="brand footer-brand" th:href="@{/dashboard}">
+            <span class="brand-mark">G</span>
+            <span>Gig<span class="brand-accent">Work</span></span>
+        </a>
+        <span>© 2026 GigWork</span>
+        <a class="back-to-top" th:href="@{/gigs}">Browse opportunities ↑</a>
+    </div>
+</footer>
+
+</body>
+</html>

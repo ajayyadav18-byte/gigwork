@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0d18">
+    <title>Log In | GigWork</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="auth-page">
+
+<header class="site-header">
+    <nav class="navbar container" aria-label="Main navigation">
+        <a class="brand" th:href="@{/}">
+            <span class="brand-mark">G</span>
+            <span>gig<span class="brand-accent">work</span></span>
+        </a>
+        <a class="login-link" th:href="@{/}">← Back to home</a>
+    </nav>
+</header>
+
+<main class="auth-main">
+    <div class="auth-glow auth-glow-one"></div>
+    <div class="auth-glow auth-glow-two"></div>
+
+    <section class="auth-layout container">
+
+        <div class="auth-intro">
+            <div class="eyebrow">
+                <span class="status-dot"></span>
+                WELCOME BACK
+            </div>
+
+            <h1>
+                Your next opportunity<br>
+                is <span class="gradient-text">waiting.</span>
+            </h1>
+
+            <p class="auth-intro-description">
+                Sign in to explore gigs, manage your applications
+                and keep your professional journey moving forward.
+            </p>
+
+            <div class="auth-benefits">
+                <div class="auth-benefit">
+                    <span class="benefit-icon">✦</span>
+                    <div>
+                        <strong>Explore opportunities</strong>
+                        <p>Find work that matches your interests.</p>
+                    </div>
+                </div>
+
+                <div class="auth-benefit">
+                    <span class="benefit-icon">◎</span>
+                    <div>
+                        <strong>Your journey, organized</strong>
+                        <p>Keep track of your gigs and applications.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-card">
+            <div class="auth-card-heading">
+                <span class="section-eyebrow">YOUR GIGWORK ACCOUNT</span>
+                <h2>Welcome back</h2>
+                <p>Enter your credentials to continue.</p>
+            </div>
+
+            <div class="form-alert form-alert-error"
+                 th:if="${param.error}"
+                 role="alert">
+                The email or password you entered is incorrect.
+                Please try again.
+            </div>
+
+            <div class="form-alert form-alert-success"
+                 th:if="${param.logout}"
+                 role="status">
+                You've been logged out successfully.
+            </div>
+
+            <div class="form-alert form-alert-success"
+                 th:if="${successMessage}"
+                 th:text="${successMessage}"
+                 role="status"></div>
+
+            <form th:action="@{/login}" method="post" class="auth-form">
+
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input id="email"
+                           name="email"
+                           type="email"
+                           placeholder="you@example.com"
+                           autocomplete="email"
+                           maxlength="190"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input id="password"
+                           name="password"
+                           type="password"
+                           placeholder="Enter your password"
+                           autocomplete="current-password"
+                           required>
+                </div>
+
+                <button class="button button-primary auth-submit"
+                        type="submit">
+                    Log in to GigWork <span aria-hidden="true">→</span>
+                </button>
+            </form>
+
+            <div class="auth-switch">
+                New to GigWork?
+                <a th:href="@{/register}">Create an account</a>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-layout">
+        <a class="brand footer-brand" th:href="@{/}">
+            <span class="brand-mark">G</span>
+            <span>gig<span class="brand-accent">work</span></span>
+        </a>
+        <p>© <span id="currentYear">2026</span> GigWork · College Project</p>
+        <a class="back-to-top" th:href="@{/}">Back to home ↑</a>
+    </div>
+</footer>
+
+</body>
+</html>
+
+

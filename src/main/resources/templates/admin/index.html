@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Control Center | GigWork</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="gigs-page admin-page">
+
+<header class="navbar">
+    <a class="brand" th:href="@{/dashboard}">GigWork<span>.</span></a>
+
+    <nav class="dashboard-nav">
+        <a th:href="@{/gigs}">Marketplace</a>
+        <a th:href="@{/dashboard}">User dashboard</a>
+    </nav>
+
+    <form th:action="@{/logout}" method="post">
+        <button class="button button-secondary" type="submit">Log out</button>
+    </form>
+</header>
+
+<main class="admin-container">
+
+    <section class="admin-hero">
+        <div>
+            <p class="eyebrow">PLATFORM MANAGEMENT</p>
+            <h1>Control center<span>.</span></h1>
+            <p>Monitor members, review listings, and keep the marketplace trustworthy.</p>
+        </div>
+        <div class="admin-live-label">
+            <span></span> Admin workspace
+        </div>
+    </section>
+
+    <div class="alert alert-success"
+         th:if="${successMessage}"
+         th:text="${successMessage}"></div>
+
+    <div class="alert alert-error"
+         th:if="${errorMessage}"
+         th:text="${errorMessage}"></div>
+
+    <section class="admin-stats">
+        <article class="admin-stat-card">
+            <span>REGISTERED MEMBERS</span>
+            <strong th:text="${totalUsers}">0</strong>
+            <p>Accounts in the database</p>
+        </article>
+
+        <article class="admin-stat-card">
+            <span>TOTAL LISTINGS</span>
+            <strong th:text="${totalGigs}">0</strong>
+            <p>All recorded gigs</p>
+        </article>
+
+        <article class="admin-stat-card">
+            <span>OPEN OPPORTUNITIES</span>
+            <strong th:text="${openGigs}">0</strong>
+            <p>Currently available listings</p>
+        </article>
+    </section>
+
+    <section class="admin-section">
+        <div class="admin-section-heading">
+            <div>
+                <p class="eyebrow">COMMUNITY</p>
+                <h2>Registered users</h2>
+            </div>
+            <span class="admin-count"
+                  th:text="${#lists.size(users)} + ' members'">0 members</span>
+        </div>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Member</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Member ID</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td>
+                        <div class="admin-member">
+                            <div class="admin-avatar"
+                                 th:text="${#strings.isEmpty(user.name) ? 'U' :
+                                     #strings.toUpperCase(#strings.substring(user.name, 0, 1))}">
+                                U
+                            </div>
+                            <strong th:text="${user.name}">Member name</strong>
+                        </div>
+                    </td>
+                    <td th:text="${user.email}">member@example.com</td>
+                    <td>
+                        <span class="admin-role"
+                              th:text="${user.role}">USER</span>
+                    </td>
+                    <td th:text="${user.id}">1</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(users)}">
+                    <td colspan="4">No registered users found.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="admin-section">
+        <div class="admin-section-heading">
+            <div>
+                <p class="eyebrow">CONTENT MODERATION</p>
+                <h2>Marketplace listings</h2>
+            </div>
+            <a class="button button-secondary" th:href="@{/gigs}">
+                View marketplace ↗
+            </a>
+        </div>
+
+        <div class="admin-listings">
+            <article class="admin-listing" th:each="gig : ${gigs}">
+                <div class="admin-listing-main">
+                    <div class="admin-listing-top">
+                        <span class="gig-category"
+                              th:text="${gig.category}">Category</span>
+
+                        <span class="admin-listing-status"
+                              th:classappend="${gig.status == 'OPEN'} ?
+                                  ' listing-open' : ' listing-other'"
+                              th:text="${gig.status}">OPEN</span>
+                    </div>
+
+                    <h3 th:text="${gig.title}">Gig title</h3>
+
+                    <p class="admin-listing-description"
+                       th:text="${gig.description}">Description</p>
+
+                    <div class="admin-listing-meta">
+                        <span th:text="${gig.location}">Remote</span>
+                        <span>
+                            ₹<span th:text="${#numbers.formatDecimal(
+                                gig.budget, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+                        </span>
+                        <span th:text="'Listing #' + ${gig.id}">Listing #1</span>
+                    </div>
+                </div>
+
+                <div class="admin-listing-actions">
+                    <form th:if="${gig.status == 'OPEN'}"
+                          th:action="@{/admin/gigs/{id}/status(id=${gig.id})}"
+                          method="post"
+                          onsubmit="return confirm('Remove this listing from the public marketplace?');">
+                        <input type="hidden" name="status" value="REMOVED">
+                        <button class="button btn-danger" type="submit">
+                            Remove listing
+                        </button>
+                    </form>
+
+                    <form th:if="${gig.status != 'OPEN'}"
+                          th:action="@{/admin/gigs/{id}/status(id=${gig.id})}"
+                          method="post"
+                          onsubmit="return confirm('Reopen this listing?');">
+                        <input type="hidden" name="status" value="OPEN">
+                        <button class="button button-primary" type="submit">
+                            Reopen listing
+                        </button>
+                    </form>
+                </div>
+            </article>
+
+            <div class="admin-empty" th:if="${#lists.isEmpty(gigs)}">
+                <h3>No listings yet</h3>
+                <p>Gigs published on the platform will appear here.</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+</body>
+</html>

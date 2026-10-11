@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0d18">
+    <title>Create Your Account | GigWork</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/app.js}" defer></script>
+</head>
+<body class="auth-page">
+
+<header class="site-header">
+    <nav class="navbar container" aria-label="Main navigation">
+        <a class="brand" th:href="@{/}" aria-label="GigWork home">
+            <span class="brand-mark">G</span>
+            <span>gig<span class="brand-accent">work</span></span>
+        </a>
+        <a class="login-link" th:href="@{/}">← Back to home</a>
+    </nav>
+</header>
+
+<main class="auth-main">
+    <div class="auth-glow auth-glow-one"></div>
+    <div class="auth-glow auth-glow-two"></div>
+
+    <section class="auth-layout container">
+
+        <div class="auth-intro">
+            <div class="eyebrow">
+                <span class="status-dot"></span>
+                YOUR NEXT CHAPTER STARTS HERE
+            </div>
+
+            <h1>
+                Turn your skills<br>
+                into <span class="gradient-text">opportunity.</span>
+            </h1>
+
+            <p class="auth-intro-description">
+                Create your GigWork account to discover opportunities,
+                share your talents and find work that fits your ambitions.
+            </p>
+
+            <div class="auth-benefits">
+                <div class="auth-benefit">
+                    <span class="benefit-icon">✦</span>
+                    <div>
+                        <strong>Discover opportunities</strong>
+                        <p>Explore gigs across different categories.</p>
+                    </div>
+                </div>
+
+                <div class="auth-benefit">
+                    <span class="benefit-icon">↗</span>
+                    <div>
+                        <strong>Showcase your skills</strong>
+                        <p>Build a profile that reflects your strengths.</p>
+                    </div>
+                </div>
+
+                <div class="auth-benefit">
+                    <span class="benefit-icon">◎</span>
+                    <div>
+                        <strong>Manage your journey</strong>
+                        <p>Keep track of your gigs and applications.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-note">
+                <span class="status-dot"></span>
+                One account. New possibilities.
+            </div>
+        </div>
+
+        <div class="auth-card">
+            <div class="auth-card-heading">
+                <span class="section-eyebrow">JOIN GIGWORK</span>
+                <h2>Create your account</h2>
+                <p>Enter your details to get started.</p>
+            </div>
+
+            <div class="form-alert form-alert-error"
+                 th:if="${registrationError}"
+                 th:text="${registrationError}"
+                 role="alert"></div>
+
+            <form th:action="@{/register}"
+                  th:object="${registrationForm}"
+                  method="post"
+                  class="auth-form">
+
+                <div class="form-group">
+                    <label for="name">Full name</label>
+                    <input id="name"
+                           type="text"
+                           th:field="*{name}"
+                           placeholder="Enter your full name"
+                           autocomplete="name"
+                           maxlength="100"
+                           required>
+                    <p class="field-error"
+                       th:if="${#fields.hasErrors('name')}"
+                       th:errors="*{name}"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input id="email"
+                           type="email"
+                           th:field="*{email}"
+                           placeholder="you@example.com"
+                           autocomplete="email"
+                           maxlength="190"
+                           required>
+                    <p class="field-error"
+                       th:if="${#fields.hasErrors('email')}"
+                       th:errors="*{email}"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Create password</label>
+                    <input id="password"
+                           type="password"
+                           th:field="*{password}"
+                           placeholder="At least 8 characters"
+                           autocomplete="new-password"
+                           minlength="8"
+                           maxlength="72"
+                           required>
+                    <p class="field-hint">Use at least 8 characters.</p>
+                    <p class="field-error"
+                       th:if="${#fields.hasErrors('password')}"
+                       th:errors="*{password}"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm password</label>
+                    <input id="confirmPassword"
+                           type="password"
+                           th:field="*{confirmPassword}"
+                           placeholder="Enter your password again"
+                           autocomplete="new-password"
+                           required>
+                    <p class="field-error"
+                       th:if="${#fields.hasErrors('confirmPassword')}"
+                       th:errors="*{confirmPassword}"></p>
+                </div>
+
+                <button class="button button-primary auth-submit"
+                        type="submit">
+                    Create my account <span aria-hidden="true">→</span>
+                </button>
+
+                <p class="auth-terms">
+                    By creating an account, you agree to use GigWork
+                    responsibly and provide accurate information.
+                </p>
+            </form>
+
+            <div class="auth-switch">
+                Already have an account?
+                <a th:href="@{/login}">Log in</a>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-layout">
+        <a class="brand footer-brand" th:href="@{/}">
+            <span class="brand-mark">G</span>
+            <span>gig<span class="brand-accent">work</span></span>
+        </a>
+        <p>© <span id="currentYear">2026</span> GigWork · College Project</p>
+        <a class="back-to-top" th:href="@{/}">Back to home ↑</a>
+    </div>
+</footer>
+
+</body>
+</html>
+

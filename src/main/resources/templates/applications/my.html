@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Applications | GigWork</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="gigs-page">
+<header class="navbar">
+    <a class="brand" th:href="@{/dashboard}">GigWork<span>.</span></a>
+    <nav class="dashboard-nav">
+        <a th:href="@{/gigs}">Explore gigs</a>
+        <a th:href="@{/dashboard}">Dashboard</a>
+    </nav>
+    <form th:action="@{/logout}" method="post">
+        <button class="button button-secondary" type="submit">Log out</button>
+    </form>
+</header>
+
+<main class="applications-page">
+    <section class="post-gig-heading">
+        <p class="eyebrow">YOUR CAREER</p>
+        <h1>My applications<span>.</span></h1>
+        <p>Track opportunities you've applied for and check their status.</p>
+    </section>
+
+    <div class="application-list"
+         th:if="${!#lists.isEmpty(applications)}">
+        <article class="gig-card"
+                 th:each="applicationRecord : ${applications}">
+            <div class="gig-card-content">
+                <span class="gig-category"
+                      th:text="${applicationRecord.gig.category}">Category</span>
+                <h2 th:text="${applicationRecord.gig.title}">Gig title</h2>
+                <p th:text="${applicationRecord.gig.location}">Remote</p>
+                <p>
+                    Applied:
+                    <span th:text="${#temporals.format(applicationRecord.createdAt, 'dd MMM yyyy')}">
+                        Date
+                    </span>
+                </p>
+            </div>
+            <div class="application-status">
+                <span th:text="${applicationRecord.status}"
+                      th:class="'status-badge status-' + ${#strings.toLowerCase(applicationRecord.status)}">
+                    PENDING
+                </span>
+                <p class="gig-budget">
+                    ₹<span th:text="${#numbers.formatDecimal(applicationRecord.gig.budget, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+                </p>
+                <a class="button button-secondary"
+                   th:href="@{/gigs/{id}(id=${applicationRecord.gig.id})}">
+                    View gig
+                </a>
+            </div>
+        </article>
+    </div>
+
+    <section class="empty-state"
+             th:if="${#lists.isEmpty(applications)}">
+        <h2>Your next opportunity starts here.</h2>
+        <p>You haven't applied to any gigs yet.</p>
+        <a class="button button-primary" th:href="@{/gigs}">
+            Explore opportunities
+        </a>
+    </section>
+</main>
+</body>
+</html>

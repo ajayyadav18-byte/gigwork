@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${gig.title} + ' | GigWork'">Gig Details | GigWork</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="site-header">
+    <div class="container navbar">
+        <a class="brand" th:href="@{/dashboard}">
+            <span class="brand-mark">G</span>
+            <span>Gig<span class="brand-accent">Work</span></span>
+        </a>
+        <nav class="dashboard-nav">
+            <a class="dashboard-nav-link" th:href="@{/gigs}">Explore gigs</a>
+            <a class="dashboard-nav-link" th:href="@{/dashboard}">Dashboard</a>
+            <form class="logout-form" th:action="@{/logout}" method="post">
+                <button class="button button-secondary button-small" type="submit">Log out</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="container gig-detail-page">
+    <a class="gig-back-link" th:href="@{/gigs}">← Back to opportunities</a>
+
+    <div class="alert alert-success"
+         th:if="${successMessage}"
+         th:text="${successMessage}"></div>
+
+    <div class="alert alert-error"
+         th:if="${errorMessage}"
+         th:text="${errorMessage}"></div>
+
+    <div class="gig-detail-layout">
+        <section class="gig-detail-main">
+            <div class="gig-detail-labels">
+                <span class="gig-category" th:text="${gig.category}">Category</span>
+                <span class="gig-status" th:text="${gig.status}">OPEN</span>
+            </div>
+
+            <h1 class="gig-detail-title" th:text="${gig.title}">Gig title</h1>
+
+            <div class="gig-detail-meta">
+                <span>📍 <span th:text="${gig.location}">Remote</span></span>
+                <span>🗓️ Posted
+                    <span th:text="${#temporals.format(gig.createdAt, 'dd MMM yyyy')}">
+                        01 Jan 2026
+                    </span>
+                </span>
+                <span>Posted by <span th:text="${gig.creator.name}">GigWork member</span></span>
+            </div>
+
+            <div class="gig-detail-divider"></div>
+
+            <h2>About this opportunity</h2>
+            <p class="gig-detail-description" th:text="${gig.description}">
+                Full gig description appears here.
+            </p>
+        </section>
+
+        <aside class="gig-detail-sidebar">
+            <div class="gig-detail-budget-label">Project budget</div>
+            <div class="gig-detail-budget">
+                ₹<span th:text="${#numbers.formatDecimal(gig.budget, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+            </div>
+            <p class="gig-detail-sidebar-note">
+                Review the project requirements and budget before deciding whether to apply.
+            </p>
+
+            <div class="gig-detail-divider"></div>
+
+            <div class="gig-sidebar-info">
+                <span>Project category</span>
+                <strong th:text="${gig.category}">Category</strong>
+            </div>
+            <div class="gig-sidebar-info">
+                <span>Work location</span>
+                <strong th:text="${gig.location}">Remote</strong>
+            </div>
+            <div class="gig-sidebar-info">
+                <span>Availability</span>
+                <strong th:text="${gig.status}">OPEN</strong>
+            </div>
+
+            <form th:if="${gig.status == 'OPEN'}"
+                  th:action="@{/applications/apply/{id}(id=${gig.id})}"
+                  method="post">
+                <button class="button button-primary" type="submit">
+                    Apply for this gig
+                </button>
+            </form>
+            <p th:if="${gig.status != 'OPEN'}" class="gig-detail-sidebar-note">
+                This gig is no longer accepting applications.
+            </p>
+        </aside>
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-layout">
+        <span>© 2026 GigWork</span>
+        <span>Find work. Build skills. Move forward.</span>
+    </div>
+</footer>
+</body>
+</html>

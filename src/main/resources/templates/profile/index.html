@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Profile | GigWork</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="gigs-page profile-page">
+
+<header class="navbar">
+    <a class="brand" th:href="@{/dashboard}">GigWork<span>.</span></a>
+
+    <nav class="dashboard-nav">
+        <a th:href="@{/gigs}">Explore gigs</a>
+        <a th:href="@{/dashboard}">Dashboard</a>
+        <a th:href="@{/applications/my}">My applications</a>
+    </nav>
+
+    <form th:action="@{/logout}" method="post">
+        <button class="button button-secondary" type="submit">Log out</button>
+    </form>
+</header>
+
+<main class="profile-container">
+
+    <section class="profile-heading">
+        <p class="eyebrow">ACCOUNT SETTINGS</p>
+        <h1>Your profile<span>.</span></h1>
+        <p>Manage your personal information and account details.</p>
+    </section>
+
+    <div class="alert alert-success"
+         th:if="${successMessage}"
+         th:text="${successMessage}"></div>
+
+    <div class="alert alert-error"
+         th:if="${errorMessage}"
+         th:text="${errorMessage}"></div>
+
+    <section class="profile-card">
+
+        <div class="profile-identity">
+            <div class="profile-avatar"
+                 th:text="${#strings.isEmpty(user.name) ? 'U' :
+                     #strings.toUpperCase(#strings.substring(user.name, 0, 1))}">
+                A
+            </div>
+
+            <div>
+                <h2 th:text="${user.name}">Your name</h2>
+                <p>GigWork member</p>
+            </div>
+        </div>
+
+        <div class="profile-divider"></div>
+
+        <form th:action="@{/profile/update}" method="post"
+              class="profile-form">
+
+            <h3>Personal information</h3>
+            <p class="profile-description">
+                Update the name displayed on your account.
+            </p>
+
+            <label for="name">Display name</label>
+            <input id="name"
+                   name="name"
+                   type="text"
+                   th:value="${user.name}"
+                   minlength="1"
+                   maxlength="100"
+                   autocomplete="name"
+                   required>
+
+            <label for="email">Email address</label>
+            <input id="email"
+                   type="email"
+                   th:value="${user.email}"
+                   readonly>
+            <p class="field-hint">
+                Your email is currently read-only.
+            </p>
+
+            <label for="role">Account role</label>
+            <input id="role"
+                   type="text"
+                   th:value="${user.role}"
+                   readonly>
+            <p class="field-hint">
+                Account permissions cannot be changed here.
+            </p>
+
+            <div class="profile-actions">
+                <button class="button button-primary" type="submit">
+                    Save changes
+                </button>
+                <a class="button button-secondary"
+                   th:href="@{/dashboard}">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </section>
+
+    <section class="profile-shortcuts">
+        <a class="profile-shortcut" th:href="@{/gigs}">
+            <span>01</span>
+            <div>
+                <h3>Explore opportunities</h3>
+                <p>Discover new gigs on the marketplace.</p>
+            </div>
+            <span class="shortcut-arrow">↗</span>
+        </a>
+
+        <a class="profile-shortcut" th:href="@{/applications/my}">
+            <span>02</span>
+            <div>
+                <h3>My applications</h3>
+                <p>Keep track of the gigs you've applied for.</p>
+            </div>
+            <span class="shortcut-arrow">↗</span>
+        </a>
+    </section>
+
+</main>
+</body>
+</html>
