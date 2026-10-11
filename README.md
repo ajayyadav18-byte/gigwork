@@ -100,7 +100,7 @@ those sample listings are not real database records.
 | Admin moderation | `ROLE_ADMIN`-only panel, summary counts, and reversible remove/reopen status changes without deleting listings are tested. |
 | Production database | Environment-only MySQL settings, TLS URL support, Flyway schema migration, and Hibernate validation are configured. Live Aiven connectivity and cloud persistence are still blocked pending private credential entry. |
 | Build and deployment | Maven tests and executable jar build can be verified locally. Docker build is not verified because Docker is unavailable; deployment remains intentionally pending. |
-| Repository and data | The workspace is secret-scanned and has a local Git commit. A private GitHub remote/push and any local-to-cloud data migration remain pending. Application startup does not copy or delete local records. |
+| Repository and data | The workspace is secret-scanned and pushed to the private [GitHub repository](https://github.com/ajayyadav18-byte/gigwork). Any local-to-cloud data migration remains pending. Application startup does not copy or delete local records. |
 
 The integration suite uses an isolated H2 database and covers template rendering,
 database persistence, authentication, authorization, CSRF, navigation, gig
@@ -119,8 +119,8 @@ listings are not persisted jobs and are labeled as illustrative.
   database password and network verification.
 - [x] Local Git repository initialized; the first commit contains the reviewed
   project files and excludes `.env`, build output, and key files.
-- [ ] Private GitHub remote and push: no `gigwork` repository exists in the
-  connected account's repository list; the GitHub CLI is not authenticated.
+- [x] Private GitHub repository created and the reviewed `main` branch pushed:
+  <https://github.com/ajayyadav18-byte/gigwork>.
 - [ ] Docker image build: not run because Docker is unavailable on this machine.
 - [ ] Local MySQL data import: no data was copied; inspect and decide which
   records should be migrated before importing to Aiven.
@@ -164,8 +164,9 @@ Before creating a service:
 1. Confirm the Aiven service is Running and decide whether any local data needs
    a one-time migration. The supplied Aiven service is a separate database and
    does not contain local data automatically.
-2. Create a **private** GitHub repository and push the reviewed project. Do not
-   add `.env`, database dumps, passwords, or certificate/key files.
+2. The reviewed project is in the private repository at
+   <https://github.com/ajayyadav18-byte/gigwork>. Do not add `.env`, database
+   dumps, passwords, or certificate/key files.
 3. In Render, choose **New → Web Service → Git Provider**, select the private
    repository, and choose **Docker** as the runtime. Use the repository root
    Dockerfile. The container reads Render's `PORT` environment variable.
