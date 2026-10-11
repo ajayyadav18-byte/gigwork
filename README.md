@@ -13,7 +13,7 @@ Spring Security, JPA, and MySQL.
    ```sh
    export DB_URL='jdbc:mysql://localhost:3306/gigwork_db'
    export DB_USERNAME='gigwork_user'
-   read -r -s -p 'Local MySQL password: ' DB_PASSWORD
+   read -r -s 'DB_PASSWORD?Local MySQL password: '
    printf '\n'
    export DB_PASSWORD
    ./mvnw spring-boot:run
@@ -47,7 +47,7 @@ locally against Aiven without saving the password in shell history:
 ```sh
 export DB_URL='jdbc:mysql://<host>:<port>/<database>?sslMode=REQUIRED'
 export DB_USERNAME='<Aiven username>'
-read -r -s -p 'Aiven MySQL password: ' DB_PASSWORD
+read -r -s 'DB_PASSWORD?Aiven MySQL password: '
 printf '\n'
 export DB_PASSWORD
 export SPRING_PROFILES_ACTIVE=prod
