@@ -3260,7 +3260,7 @@ select:focus-visible {
     transition: border-color .2s ease, transform .2s ease, background .2s ease;
 }
 
-a.workspace-stat:hover { transform: translateY(-3px); border-color: rgba(177,156,255,.45); background: rgba(149,91,255,.06); }
+.workspace-stat:hover { transform: translateY(-3px); border-color: rgba(177,156,255,.45); background: rgba(149,91,255,.06); box-shadow: 0 14px 32px rgba(38, 25, 82, .16); }
 .workspace-stat-icon { grid-column: 2; grid-row: 1 / span 2; display: grid; width: 39px; height: 39px; place-items: center; border: 1px solid rgba(175,153,255,.18); border-radius: 13px; background: rgba(149,91,255,.1); color: #bbaaff; font-size: 19px; }
 .workspace-stat-label { align-self: center; color: var(--muted); font-size: 12px; font-weight: 600; }
 .workspace-stat strong { grid-column: 1; font-size: 34px; line-height: 1.2; letter-spacing: -.04em; }
