@@ -38,11 +38,14 @@ public class SecurityConfig {
 
         http.authenticationManager(authenticationManager);
 
+        http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"));
+
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(
                         "/", "/register", "/login",
                         "/css/**", "/js/**", "/images/**",
-                        "/favicon.ico", "/error"
+                        "/favicon.ico", "/error",
+                        "/api/**"
                 ).permitAll()
 
                 .requestMatchers("/admin/**").hasRole("ADMIN")
