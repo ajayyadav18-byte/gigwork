@@ -9,7 +9,7 @@
     <title>Explore Gigs | GigWork</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body class="gigs-page">
+<body class="gigs-page workspace-page">
 
 <header class="site-header">
     <nav class="navbar container" aria-label="Main navigation">
@@ -25,12 +25,15 @@
             <a class="dashboard-nav-link" th:href="@{/gigs/new}">Post a gig</a>
             <a class="dashboard-nav-link" th:href="@{/applications/my}">My applications</a>
             <a class="dashboard-nav-link" th:href="@{/applications/received}">Manage applicants</a>
-            <a class="dashboard-nav-link" th:href="@{/profile}">My profile</a>
             <a class="dashboard-nav-link" th:href="@{/dashboard}">Dashboard</a>
             <a class="dashboard-nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Admin</a>
         </div>
 
         <div class="gigs-header-actions">
+            <a class="workspace-profile-link" th:href="@{/profile}" aria-label="Open your profile">
+                <span class="workspace-avatar" th:text="${#strings.isEmpty(user.name) ? 'U' : #strings.toUpperCase(#strings.substring(user.name, 0, 1))}">A</span>
+                <span th:text="${user.name}">Member</span>
+            </a>
             <form th:action="@{/logout}" method="post" class="logout-form">
                 <button class="button button-secondary button-small"
                         type="submit">Log out</button>
