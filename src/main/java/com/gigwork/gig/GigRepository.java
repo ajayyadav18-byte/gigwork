@@ -13,6 +13,7 @@ public interface GigRepository extends JpaRepository<Gig, Long> {
     @EntityGraph(attributePaths = "creator")
     Optional<Gig> findById(Long id);
 
+    @EntityGraph(attributePaths = "creator")
     List<Gig> findByStatusOrderByCreatedAtDesc(String status);
 
     long countByCreatorIdAndStatusIgnoreCase(Long creatorId, String status);
