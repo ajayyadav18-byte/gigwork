@@ -100,8 +100,8 @@ those sample listings are not real database records.
 | Admin moderation | `ROLE_ADMIN`-only panel, summary counts, and reversible remove/reopen status changes without deleting listings are tested. |
 | Member workspace | The dashboard shows live counts for open gigs, submitted applications, incoming applications, and the latest marketplace listings. Showcase gigs are optional, clearly disclosed college-demo briefs and are disabled by default. |
 | Production database | Environment-only MySQL settings, TLS URL support, Flyway schema migration, and Hibernate validation are configured. Aiven TLS authentication was verified, and the production profile started against the empty Aiven database and served the public pages. App-level CRUD persistence against Aiven remains unverified. |
-| Build and deployment | Maven tests and executable jar build can be verified locally. The Render service is live and connected to the private GitHub repository; updates deploy from `main`. Docker build is not verified because Docker is unavailable. |
-| Repository and data | The workspace is secret-scanned and pushed to the private [GitHub repository](https://github.com/ajayyadav18-byte/gigwork). Any local-to-cloud data migration remains pending. Application startup does not copy or delete local records. |
+| Build and deployment | Maven tests and executable jar build can be verified locally. The Render service is live and connected to the [GitHub repository](https://github.com/ajayyadav18-byte/gigwork); updates deploy from `main`. Docker build is not verified because Docker is unavailable. |
+| Repository and data | The workspace is secret-scanned and pushed to the [GitHub repository](https://github.com/ajayyadav18-byte/gigwork). Any local-to-cloud data migration remains pending. Application startup does not copy or delete local records. |
 
 The integration suite uses an isolated H2 database and covers template rendering,
 database persistence, authentication, authorization, CSRF, navigation, gig
@@ -135,7 +135,7 @@ adds the gigs when that email registers.
   or marketplace records were created.
 - [x] Local Git repository initialized; the first commit contains the reviewed
   project files and excludes `.env`, build output, and key files.
-- [x] Private GitHub repository created and the reviewed `main` branch pushed:
+- [x] GitHub repository created and the reviewed `main` branch pushed:
   <https://github.com/ajayyadav18-byte/gigwork>.
 - [ ] Docker image build: not run because Docker is unavailable on this machine.
 - [ ] Local MySQL data import: no data was copied; inspect and decide which
@@ -180,10 +180,10 @@ Before creating a service:
 1. Confirm the Aiven service is Running and decide whether any local data needs
    a one-time migration. The supplied Aiven service is a separate database and
    does not contain local data automatically.
-2. The reviewed project is in the private repository at
+2. The reviewed project is in the repository at
    <https://github.com/ajayyadav18-byte/gigwork>. Do not add `.env`, database
    dumps, passwords, or certificate/key files.
-3. In Render, choose **New → Web Service → Git Provider**, select the private
+3. In Render, choose **New → Web Service → Git Provider**, select the
    repository, and choose **Docker** as the runtime. Use the repository root
    Dockerfile. The container reads Render's `PORT` environment variable.
 4. Before creating/deploying the service, add these environment variables in
